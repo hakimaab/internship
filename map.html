@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wetechcare</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
+  <link rel="stylesheet" href="map.css" />
+  <script src= "map.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.js"></script>
+	<script type = "text/javascript" src = "https://d3js.org/d3.v5.min.js"></script>
+  <script src="//d3js.org/topojson.v1.min.js"></script>
+</head>
+<body>
+	<div id="map" >
+		<div class="main" id ="box" >
+			<div class="list">
+				<a href="https://wetechcare.org/" class="infos-logo--link js-logo-main">
+					<img class="infos-logo--img" src="https://www.lassuranceretraite.fr/portail-info/files/live/sites/pub/files/images/article/LOGO%20WTC-grand.png" width="100" >
+				</a>
+					<span class="infos-logo"></span> 
+					<div id="btn">
+						<div id="top"></div>
+						<div id="middle"></div>
+						<div id="bottom"></div>
+					  </div>
+			</div>
+			<div class="listindicateur" id="list" >
+        <div id="s">
+           <i  class="fa fa-eye-slash" id="desiredInput" onclick="eyeicon()"></i>
+          <p class="headlist" id="head">
+          </p>
+        </div>
+        </div>
+        <div id="scroll-part">
+          <div id="variables" >
+            <div class="dcard-legend--wrap _item-main">
+              <ul class="dcard-legend--list js-dcard-legend--list display-inline" id="legend" data-id="eligibilite-toutes-technologies">
+                <li style="width:35px" data-index="0" > 
+              <span class="dcard-legend--item-shape-color" style="background-color:#800026" ></span>
+            </li>
+                <li style="width:35px" data-index="1" >
+                <span class="dcard-legend--item-shape-color" style="background-color:#fd693c" ></span> </li>
+                <li style="width:35px" data-index="2" > 
+                <span class="dcard-legend--item-shape-color" style="background-color:#feb24c" ></span></li>
+                <li style="width:35px" data-index="3" > 
+                  <span class="dcard-legend--item-shape-color" style="background-color:#fed976"></span></li>
+              </ul>	
+              </div>
+              <div id="sous-titre" >
+                <div id="intervale4">de 2.2575 à 6.08</div>
+                <div id="intervale2">de 0.9 à 2.2575</div>
+                <div id="intervale3">de -0.9475 à 0.9</div>
+                <div id="intervale4">de -5.44 à -0.9475</div>
+              </div> 
+              <div id="indication">du moins au plus précaire,<div id="division">par département</div></div>
+            </div>
+          </div>
+              <div id="explanation">
+                L’indicateur de précarité numérique a été calculé sur la base de six indicateurs sociodémographiques et géographique issus des bases de données de l’INSEE.
+                <a href="#" id="nom_unique"onclick="affichertexte()">[Lire la suite]</a>
+                <div id="suite" style="display:none">Il s’agit de la part des personnes âgées de 65 ans ou + (2017, échelle communale), la part des non ou peu diplômés dans la pop. non scolarisée de 15 ans ou + (2017, échelle communale), le salaire net horaire moyen (2016, échelle départementale),
+                  la qualification de commune comme isolée  hors influence des pôles (2018, échelle communale), la part des ménages de 1 personne (2019, échelle communale) et la part des jeunes non insérés (2016, échelle départementale). Les deux premiers facteurs, qui sont ceux qui ont le plus d’influence sur 
+                la fracture numérique, ont été imputés d’une coefficient (3 pour l’âge et le niveau de diplôme, 2 pour le revenu).
+                <a href="#" id="nom_unique"onclick="reduiretexte()">[voir moins]</a>
+                
+              </div>
+               </div> 
+				
+        </div>
+			</div>
+    </div>
+        <div id="page"></div>
+</div>
+  <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+  <script>
+    function affichertexte(){
+      document.getElementById('nom_unique').style.display= 'none'; 
+      document.getElementById('suite').style.display= 'block'; 
+    }
+    function reduiretexte(){
+      document.getElementById('nom_unique').style.display= 'block'; 
+      document.getElementById('suite').style.display= 'none'; 
+    }
+  </script>
+	<script> 
+			var map = L.map('map').setView([46.2276, 2.2137],8);
+L.tileLayer('https://cartocdn_{s}.global.ssl.fastly.net/base-eco/{z}/{x}/{y}.png',{
+  tileSize: 512,
+  zoomOffset: -1,
+  zoomControl: false,
+  minZoom: 1, // controls how much the map's zoom level will change after a zoom // min zoom level the user can zoom out
+  attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
+  crossOrigin: true
+}).addTo(map);
+map.zoomControl.setPosition('topright');
+	</script>
+<script>
+    var sidebarBox = document.querySelector('#box');
+    var sidebarBtn = document.querySelector('#btn');
+    var pageWrapper = document.querySelector('#page');
+    sidebarBtn.addEventListener('click', function(event) {
+    if (this.classList.contains('active')) {
+    this.classList.remove('active');
+    sidebarBox.classList.remove('active');
+    close();
+    } else {
+    this.classList.add('active');
+    sidebarBox.classList.add('active');
+    open();
+    }
+    });
+    pageWrapper.addEventListener('click', function(event) {
+    if (sidebarBox.classList.contains('active')) {
+    sidebarBtn.classList.remove('active');
+    sidebarBox.classList.remove('active');
+    close();
+    }
+    }); 
+    window.addEventListener('keydown', function(event) {
+    if (sidebarBox.classList.contains('active') && event.keyCode === 27) {
+    sidebarBtn.classList.remove('active');
+    sidebarBox.classList.remove('active');
+    close();
+    }
+	});
+function open() {
+    document.getElementById("box").style.width = "250px";
+    document.getElementById("page").style.marginLeft = "250px";
+    document.getElementById("box").style.display = "block";
+    document.getElementById("box").style.backgroundColor = "white";
+    document.getElementById("head").innerText = "Indicateur de précarité numérique";
+    document.getElementById("desiredInput").style.display = "block";
+    document.getElementById("variables").style.display = "block";
+    document.getElementById("s").style.display = "block";
+    document.getElementById("explanation").style.display = "block";
+    document.getElementById("box").style.boxShadow="4px 4px 10px";
+
+}
+function close() {
+    document.getElementById("box").style.width = "0";
+    document.getElementById("page").style.marginLeft = "0";
+    document.getElementById("head").innerText = "";
+    document.getElementById("desiredInput").style.display = "none";
+    document.getElementById("variables").style.display = "none";
+    document.getElementById("s").style.display = "none";
+    document.getElementById("explanation").style.display = "none";
+    document.getElementById("box").style.boxShadow="0px 0px 0px";
+
+}
+dividecommunes();
+	function dividecommunes(){
+	var svg = d3.select(map.getPanes().overlayPane).append("svg"),
+	g = svg.append("g").attr("class", "leaflet-zoom-hide");
+    var promises = [];
+    promises.push(d3.json("http://localhost:8080/send"));
+    promises.push(d3.json("regions.json"));
+    promises.push(d3.json("departments.json"));
+    Promise.all(promises).then(function(values) {
+    const geojson = values[0]; // Récupération de la première promesse : le contenu du fichier JSON
+	const regions= values[1]; 
+	const depts=values[2];
+    //  create a d3.geo.path to convert GeoJSON to SVG
+    var transform = d3.geo.transform({point: projectPoint}),
+		  path = d3.geo.path().projection(transform);
+    // create path elements for each of the features
+    d3_features = g.selectAll("path")
+      .data(topojson.feature(geojson,geojson.objects.custom).features)
+      .enter()
+    .append("path");
+    map.on("viewreset", reset);
+  reset();
+
+  // fit the SVG element to leaflet's map layer
+  var tooltip = d3.select("body").append("div")   
+                  .attr("class", "tooltip")               
+                 .style("opacity", 1);
+  function reset() {
+      bounds = path.bounds(topojson.feature(geojson,geojson.objects.custom));
+      var topLeft = bounds[0],
+      bottomRight = bounds[1];
+      svg .attr("width", bottomRight[0] - topLeft[0])
+          .attr("height", bottomRight[1] - topLeft[1])
+          .style("left", topLeft[0] + "px")
+          .style("top", topLeft[1] + "px")
+      g .attr("transform", "translate(" + -topLeft[0] + "," 
+										+ -topLeft[1] + ")");
+       
+         d3_features.attr('id', function(d) {return "d" + d.properties.insee;})
+					.attr("d", path)
+         d3.csv("http://localhost:8080/sendfile").then(function(csv) {
+         csv.forEach(function(e,i) {
+          d3.select("#d" + e.Code_Insee)
+              .attr("class", function() {
+				   if(e.Indicateur_Precarite<=-2.5){
+                         return "q0-5";
+				   }
+				   else{
+					if(-2.5<e.Indicateur_Precarite){
+						if(e.Indicateur_Precarite<=0.1){
+							return "q1-5";
+						}
+						else{
+							if(e.Indicateur_Precarite<=3.1){
+							return "q2-5";
+            }
+            else{
+              return "q4-5";
+            }	
+					}	
+					}
+           }
+        })
+       
+       .on("mouseover", function(d) {
+            tooltip.transition()        
+                .duration(200)      
+                .style("opacity",1);
+            tooltip.html("<div class='commune'>"  +e.NomCommune + "</div>"
+                    + "<b>part non diplômés : </b>" + e.PeuNonDiplomes+ "<br>"
+                    + "<b>part + de 65 ans: </b>" + e.Age+ "<br>"
+                    + "<b>Salaire net: </b>" + e.Salaire_net_horaire_moyen+ "<br>"
+                    + "<b>part des ménages de 1 personne: </b>" + e.Menageisolee+ "<br>"
+                    + "<b>Part des Neets: </b>" + e.Neets+ "<br>"
+                    + "<b>ind. de précarité numérique: </b>" + e.Indicateur_Precarite + "<br>")
+                .style("left", (d3.event.pageX-120) + "px")     
+                .style("top", (d3.event.pageY-120) + "px");
+        })
+       .on("mouseout", function(d) {
+                tooltip.style("opacity", 0);
+                tooltip.html("")
+                    .style("left", "-500px")
+                    .style("top", "-500px");
+        });
+			});
+     });
+           map.on('zoomend', function() {
+            tooltip.html("")
+                    .style("left", "-500px")
+                    .style("top", "-500px");
+             var currentZoom = map.getZoom();
+               if (currentZoom>8) { 
+            }
+
+         });
+       } 
+  function projectPoint(x, y) {
+      var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+      this.stream.point(point.x, point.y);
+  }
+})
+}	
+</script>
+
+</body>
+</html>
