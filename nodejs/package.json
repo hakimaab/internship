@@ -1,0 +1,24 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "http server with api rest",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "http",
+    "rest",
+    "server",
+    "node"
+  ],
+  "author": "Hakima Abouhssouss",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "json2xls": "^0.1.2",
+    "tippy.js": "^6.2.6",
+    "xlsx": "^0.16.4"
+  }
+}
