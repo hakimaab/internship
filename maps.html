@@ -139,8 +139,10 @@
   g.attr('transform', d3.event.transform);
   var currentscale=d3.zoomTransform(g.node());
   console.log(currentscale);
-    if(currentscale.k==2.856100000000001){
-      dividecommunes();
+    if(currentscale.k>=2.856100000000001){
+      if(currentscale.k<3){ 
+        dividecommunes();
+      }   
     }
   })
   var zoomout = d3.zoom()
@@ -148,7 +150,7 @@
   g.attr('transform', d3.event.transform);
   var currentscale=d3.zoomTransform(g.node());
   console.log(currentscale);
-    if(currentscale.k<=1.3){
+    if(currentscale.k<=2.1970000000000005){
       dividedeps();
     } 
   })
@@ -156,8 +158,10 @@
   g.attr('transform', d3.event.transform);
   var currentscale=d3.zoomTransform(g.node());
   console.log(currentscale);
-    if(currentscale.k>=2.6){
-      dividecommunes();
+    if(currentscale.k>=2.5){
+      if(currentscale.k<3){ 
+        dividecommunes();
+      }   
     }
   })
   g.call(zoominmouseclick);
