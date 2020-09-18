@@ -156,10 +156,7 @@
   g.attr('transform', d3.event.transform);
   var currentscale=d3.zoomTransform(g.node());
   console.log(currentscale);
-    if(currentscale.k==2){
-      dividecommunes();
-    }
-    if(currentscale.k==2.6){
+    if(currentscale.k>=2.6){
       dividecommunes();
     }
   })
