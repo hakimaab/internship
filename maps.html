@@ -135,23 +135,40 @@
     var tooltip = d3.select("body").append("div")   
                   .attr("class", "tooltip")               
                  .style("opacity", 1);
-                 var zoom = d3.zoom()
-	             .on('zoom', function() {
+  var zoomin= d3.zoom().on('zoom', function() {
   g.attr('transform', d3.event.transform);
   var currentscale=d3.zoomTransform(g.node());
+  console.log(currentscale);
     if(currentscale.k==2.856100000000001){
       dividecommunes();
     }
+  })
+  var zoomout = d3.zoom()
+	             .on('zoom', function() {
+  g.attr('transform', d3.event.transform);
+  var currentscale=d3.zoomTransform(g.node());
+  console.log(currentscale);
     if(currentscale.k<=1.3){
       dividedeps();
     } 
   })
-  g.call(zoom);
+  var zoominmouseclick= d3.zoom().on('zoom', function() {
+  g.attr('transform', d3.event.transform);
+  var currentscale=d3.zoomTransform(g.node());
+  console.log(currentscale);
+    if(currentscale.k==2){
+      dividecommunes();
+    }
+    if(currentscale.k==2.6){
+      dividecommunes();
+    }
+  })
+  g.call(zoominmouseclick);
   d3.select('#zoom_in').on('click', function() {
-  zoom.scaleBy(g.transition().duration(750), 1.3);
+  zoomin.scaleBy(g.transition().duration(750), 1.3);
    });
   d3.select('#zoom_out').on('click', function() {
-      zoom.scaleBy(g.transition().duration(750), 1 / 1.3); 
+      zoomout.scaleBy(g.transition().duration(750), 1 / 1.3); 
   });
      dividedeps();
     function dividedeps(){
@@ -170,7 +187,6 @@
          csv.forEach(function(e,i) {
           d3.select("#d" + e.Code_departement)
               .attr("class", function() {
-                console.log("i am here");
 				   if(e.Indicateur_Precarite_departement<=-0.4){
                          return "q0-5";              
 				   }
